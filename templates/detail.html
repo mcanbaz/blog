@@ -1,0 +1,85 @@
+{% extends "layout.html" %}
+
+{% block body %}
+
+{% if article %}
+
+<div class="container mt-5">
+<div class="row">
+    <div class="col-lg-8">
+    <!-- Post content-->
+        <article>
+        <!-- Post header-->
+        <header class="mb-4">
+        <!-- Post title-->
+        <h1 class="fw-bolder mb-1">{{article.title}}</h1>
+        <!-- Post meta content-->
+        <div class="text-muted fst-italic mb-2">Posted on {{article.created_date}} by {{article.author.username}}</div>
+        <!-- Post categories
+        <a class="badge bg-secondary text-decoration-none link-light" href="#!">Web Design</a>
+        <a class="badge bg-secondary text-decoration-none link-light" href="#!">Freebies</a> -->
+        </header>
+        <!-- Preview image figure -->
+        {% if article.article_image %}
+        <figure class="mb-4"><img class="img-fluid rounded" src="{{article.article_image.url}}" alt="{{article.article_image.url}}" /></figure>
+        {% endif %}
+        <!-- Post content-->                
+        <p class="lead">
+        {{article.content|safe}}
+        </p>                
+        </article>
+    </div>
+</div>
+
+
+
+<div class="card-body">
+    {% if comments %}
+
+    {% for comment in comments %}
+    <div class="media mb-4">
+        <div class="d-flex mr-3"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>
+        <div class="media-body">
+            <div class="media-body">{{ comment.comment_author }} | {{ comment.comment_date }}</div>
+            {{ comment.comment_content }}
+        </div>
+    </div>
+    {% endfor  %}
+
+    {% else %}
+    <div class="alert alert-danger">
+    Bu makaleye hiç yorum yapılmamış, ilk yorumu siz yapın.
+    </div>
+    {% endif %}
+</div>
+
+
+<div class="card my-4">
+    <div class="card-body">
+        <!-- Comment form-->
+        <h5 class="card-header">Yorum Ekle</h5>
+        <form method="post" action="{% url 'article:comment' article.id %}"> <!--- /articles/comment/{{article.id}} -->
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="comment_author">İsim:</label>
+                <input type="text" name="comment_author" class="form-control" id="comment_author" placeholder="İsminiz"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="txtarea">Yorum:</label>
+            <textarea name="comment_content" class="form-control" rows="3" placeholder="Yorum ekle!"></textarea>
+            </div>
+            <button type="submit" class="btn btn-danger">Kaydet</button>
+            
+        </form>
+    </div>
+</div>
+
+
+</div>
+
+
+
+
+{% endif %}
+{% endblock %}

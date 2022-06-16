@@ -1,0 +1,61 @@
+{% extends "layout.html" %}
+
+{% block body %}
+<div class="container mt-5">
+  <div class="row"> 
+    <div class="col-lg-8">
+      <h3>Makaleler</h3> 
+      <hr>   
+    </div>
+      
+  </div>
+
+{% if articles %}
+        {% for article in articles %}
+          <div class="row">
+              <div class="col-lg-8">
+              <!-- Post content-->
+                  <article>
+                  <!-- Post header-->
+                  <header class="mb-4">
+                  <!-- Post title-->
+                  <a href="{% url 'article:detail' article.id %}"><h2 class="fw-bolder mb-1">{{article.title}}</h2></a>
+                  <!-- Post meta content-->
+                  <div class="text-muted fst-italic mb-2">Posted on {{article.created_date}} by {{article.author.username}}</div>
+                  <!-- Post categories
+                  <a class="badge bg-secondary text-decoration-none link-light" href="#!">Web Design</a>
+                  <a class="badge bg-secondary text-decoration-none link-light" href="#!">Freebies</a> -->
+                  </header>
+                  <!-- Preview image figure -->
+                  {% if article.article_image %}
+                  <figure class="mb-4"><a href="/articles/article/{{article.id}}"><img class="img-fluid rounded" src="{{article.article_image.url}}" alt="{{article.article_image.url}}" /></a>
+                  </figure>
+                  {% endif %}
+                  <!-- Post content safe : html içerikleri doğru sekilde göstermek icin
+                  truncatewords:10 ilk 10 karakteri gösteriyor
+                  -->                
+                  <p class="lead">
+                  {{article.content|safe|truncatewords:10}}
+                  </p>
+                  <a style="float:right" href="/articles/article/{{article.id}}" class="btn btn-warning">Devamını oku</a>
+                  </article>
+              </div>
+          </div>
+        {% endfor %} 
+</div>
+
+{% else %}
+<div class="row"> 
+  <div class="col-lg-8">
+    <div class="alert alert-danger">Makale Bulunamadı.</div>
+    <a href="/articles/addarticle" class="btn btn-danger">Makale Ekle</a>
+  </div>    
+</div>
+
+
+
+{% endif %}
+
+
+
+{% endblock %}

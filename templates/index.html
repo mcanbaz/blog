@@ -1,0 +1,19 @@
+{% extends "layout.html" %}
+
+{% block body %}
+
+
+<div class="jumbotron">
+<h3>Yazılım Bilimi DJANGO Bloğuna hoşgeldiniz</h3>
+
+<p>Bu blogta geliştiriciler olarak blog yazılarınızı paylaşabilirsiniz.</p>
+<p>
+{% if request.user.is_authenticated %}
+    Merhaba {{ request.user.username }}
+{% else %}
+    Giriş yapılmamış.
+{% endif %}
+</p>
+</div>
+
+{% endblock %}
